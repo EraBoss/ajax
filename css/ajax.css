@@ -1,0 +1,25 @@
+.main {
+  padding: 100px;
+}
+.main__block1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.block1__title {
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+.block1__button {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #9b42c4;
+  color: aliceblue;
+}
+
+.era {
+  width: 200px;
+  height: 200px;
+  display: block;
+}
