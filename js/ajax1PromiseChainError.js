@@ -65,6 +65,8 @@ const getCountryCoatFromGeocode = function(lat, lon) {
         if (!data.countryCode) {
             throw new Error('Country not found')
         };
+        document.querySelector('.block1__img-cont').insertAdjacentHTML('beforeend',
+        `<p> you are in ${data.city}, ${data.countryName} </p>`);
         return getCountryFromCode(data.countryCode);
     })
     .then((data) => {
@@ -81,7 +83,86 @@ const getCountryCoatFromGeocode = function(lat, lon) {
         derror(err)
     })
 };
+/*
 getCountryCoatFromGeocode(35.756,139.256);
-//getCountryCoatFromGeocode(48.857,2.358);
-//getCountryCoatFromGeocode(40.708,-74.051);
+getCountryCoatFromGeocode(48.857,2.358);
+getCountryCoatFromGeocode(40.708,-74.051);
+
+console.log('start');
+setTimeout(console.log,'timer 0s',0)
+Promise.resolve('promise').then((data) => {
+    console.log(data);
+})
+console.log('end');
+*/
+
+const prom  = function () {
+    return  new Promise(function(resolve,reject) {
+     if(Math.random() > 0.5) {
+        resolve(('win'))
+    } else {
+        reject(('lose'))
+    }
+}).then((a => console.log(a)))
+.catch((a => console.log(a)));
+}
+
+//navigator.geolocation.getCurrentPosition(a => a);
+const  wait = function(sec) {
+    return new Promise(function(resolve) {
+        setTimeout(function() {
+            console.log('прошло ' + sec + ' секунд');
+            resolve()
+        }, sec * 1000)
+    })
+}
+
+const getUserPos = function () { 
+    return new Promise(function (resolve,reject) {
+        navigator.geolocation.getCurrentPosition(resolve,reject)
+    })
+}
+getUserPos()
+.then(data => {
+    getCountryCoatFromGeocode(data.coords.latitude,data.coords.longitude)})
+.catch(err => console.log(err));
+
+const imgCont = document.querySelector('.block1__img-cont');
+
+const createImgEl = function (ImagePath) {
+    return new Promise(function(resolve,reject) {
+       const imgEl = document.createElement('img');
+       imgEl.classList.add('era');
+       imgEl.src = ImagePath
+       imgEl.addEventListener('load',function () {
+        imgCont.prepend(imgEl);
+        resolve(imgEl)
+       });
+       imgEl.addEventListener('error', function() {
+        reject(new Error('Произошла ошибка возможно не правильный путь!'))
+       })
+    })
+}
+
+let currentImage;
+
+createImgEl('../img/genj.jpg')
+.then((image) => {
+    currentImage = image;
+    console.log('first image loaded');
+    return wait(2);
+})
+.then(() => {
+    currentImage.style.display = 'none';
+    return createImgEl('../img/real.jpg')
+})
+.then((image) => {
+    currentImage = image;
+    console.log('second image loaded');
+    return wait(2);
+})
+.then(() => {
+    currentImage.style.display = 'none';
+})
+.catch((err) => console.log(err))
 
