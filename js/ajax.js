@@ -25,4 +25,33 @@ function getCountry(countryName) {
         })
     });
 }
-getCountry('ukraine');
+//getCountry('ua');
+
+let contentContainer = document.querySelector('.block1__content');
+let page = 0;
+let isLoading = false;
+
+const loadContent = async function() {
+    if (!isLoading && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+        await getContent();
+      }
+};
+
+const getContent = async function() {
+    isLoading = true;
+    const response = await fetch('source.html');
+    if(response.ok) {
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const items = doc.querySelectorAll('.item')
+        if(page < items.length) {
+            contentContainer.insertAdjacentElement('beforeend',items[page])
+        }
+        page++;
+    };
+    isLoading = false;
+}
+
+window.addEventListener('scroll',loadContent);
+
+
