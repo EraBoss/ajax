@@ -23,3 +23,8 @@
   height: 200px;
   display: block;
 }
+
+.item {
+  height: 300px;
+  border: 1px solid #000;
+}
