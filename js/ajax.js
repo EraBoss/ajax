@@ -39,7 +39,7 @@ const loadContent = async function() {
 
 const getContent = async function() {
     isLoading = true;
-    const response = await fetch('source.html');
+    const response = await fetch('../source.html');
     if(response.ok) {
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -53,5 +53,14 @@ const getContent = async function() {
 }
 
 window.addEventListener('scroll',loadContent);
+
+let frame = document.querySelector('#source-slider');
+let items = frame.querySelectorAll('.item')
+let doc = frame.contentDocument;
+let html = doc.documentElement
+console.log(frame);
+console.log(items);
+console.log(doc);
+console.log(html);
 
 

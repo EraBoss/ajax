@@ -7,6 +7,9 @@ padding: 100px;
             flex-direction: column;
 		}
 }
+#source-slider {
+    display: none;
+}
 .block1 {
     &__title {
         font-size: 30px;

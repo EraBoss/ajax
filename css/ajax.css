@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+#source-slider {
+  display: none;
+}
+
 .block1__title {
   font-size: 30px;
   margin-bottom: 50px;
