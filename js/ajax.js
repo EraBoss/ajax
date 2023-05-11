@@ -34,33 +34,50 @@ let isLoading = false;
 const loadContent = async function() {
     if (!isLoading && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
         await getContent();
-      }
+    }
 };
 
 const getContent = async function() {
-    isLoading = true;
-    const response = await fetch('../source.html');
-    if(response.ok) {
-        const html = await response.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const items = doc.querySelectorAll('.item')
+    try {
+        isLoading = true;
+        const response = await fetch('../source.html');
+        if(response.ok) {
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const items = doc.querySelectorAll('.item');
+            if(page == items.length) {
+                window.removeEventListener('scroll', loadContent)
+            };
+            if(page < items.length) {
+                contentContainer.insertAdjacentElement('beforeend',items[page]);
+            };
+            page++;
+        };
+        isLoading = false;
+    } catch(err) {
+        console.log(err);
+        let storedSlidersArray = JSON.parse(localStorage.getItem('slidersArray'));
+        let div = document.createElement('div');
+        storedSlidersArray.forEach(element => {
+            div.innerHTML += element;
+        });
+        let items = div.querySelectorAll('.item');
+        if(page == items.length) {
+            window.removeEventListener('scroll', loadContent)
+        };
         if(page < items.length) {
-            contentContainer.insertAdjacentElement('beforeend',items[page])
-        }
+            contentContainer.insertAdjacentElement('beforeend',items[page]);
+        };
         page++;
-    };
-    isLoading = false;
-}
+        isLoading = false;
+    }
+};
 
 window.addEventListener('scroll',loadContent);
 
-let frame = document.querySelector('#source-slider');
-let items = frame.querySelectorAll('.item')
-let doc = frame.contentDocument;
-let html = doc.documentElement
-console.log(frame);
-console.log(items);
-console.log(doc);
-console.log(html);
+
+
+
+
 
 
